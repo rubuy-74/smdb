@@ -2,7 +2,6 @@ package models
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 )
 
@@ -24,13 +23,13 @@ func PrepareStatement(input string) (*Statement, error) {
 			return &Statement{}, fmt.Errorf("invalid insert statement")
 		}
 
-		id, err := strconv.Atoi(values[0])
-		if err != nil {
-			return &Statement{}, fmt.Errorf("invalid id value")
-		}
-		stmt.InsertRow.ID = id
-		stmt.InsertRow.Username = values[1]
-		stmt.InsertRow.Email = values[2]
+		/* 		id, err := strconv.Atoi(values[0])
+		   		if err != nil {
+		   			return &Statement{}, fmt.Errorf("invalid id value")
+		   		} */
+		/* 		stmt.InsertRow.ID = id
+		   		stmt.InsertRow.Username = values[1]
+		   		stmt.InsertRow.Email = values[2] */
 	}
 
 	return stmt, nil
