@@ -15,3 +15,7 @@ func GetInput() (string, error) {
 	}
 	return line[:len(line)-1], nil
 }
+
+func ToString(bytes []byte) string {
+	return string(bytes[:])
+}

@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/rubuy-74/smDB/internal/models"
-)
+	"log"
 
-const MAX_TABLE_SIZE = 100
+	"github.com/rubuy-74/smDB/internal/b3"
+)
 
 /* var metaFuncMap map[string]func() error
 var stmtFuncMap = map[string]func(*models.Statement) error{
@@ -13,17 +13,27 @@ var stmtFuncMap = map[string]func(*models.Statement) error{
 } */
 
 func main() {
-	page := models.Page{}
-	rowTest, _ := models.CreateRow(0, "a", "a")
-	rowTest2, _ := models.CreateRow(1, "b", "b")
-	rowTest3, _ := models.CreateRow(2, "c", "c")
-	page.AddRow(rowTest)
-	page.AddRow(rowTest2)
-	page.AddRow(rowTest3)
-	/* 	models.PrintRow(page.GetRow(0))
-	   	models.PrintRow(page.GetRow(1))
-	   	models.PrintRow(page.GetRow(2)) */
+}
 
+func updateKV() {
+	node := createdFirstNode()
+	key := []byte("k3")
+	newVal := []byte("updated")
+	new, err := b3.ChangeKVPair(node, key, newVal)
+	if err != nil {
+		log.Fatal(err)
+	}
+	new.PrintAllKV()
+}
+
+func createdFirstNode() b3.BNode {
+	node := b3.BNode(make([]byte, b3.BTREE_PAGE_SIZE))
+	node.SetHeader(b3.BNODE_LEAF, 3)
+	b3.NodeAppendKV(node, 0, 0, []byte("k1"), []byte("hiaaah"))
+	b3.NodeAppendKV(node, 1, 0, []byte("k3"), []byte("hello"))
+	b3.NodeAppendKV(node, 2, 0, []byte("k4"), []byte("fucku"))
+
+	return node
 }
 
 /* func main() {
