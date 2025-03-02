@@ -3,7 +3,10 @@
 [X] Pages 
 [] B-tree
   [X] BNode
-  [] Insert and Update
-  [] Split node
-  [] Tree
+  [X] Insertion and Update
+  [X] Deletion
+  [] Test it all
+  [] Disk persistence
+[] Integration with database
 [] Queries
+[] Concurrent Transactions

@@ -183,9 +183,6 @@ func NodeAppendKV(new BNode, idx uint16, ptr uint64, key []byte, val []byte) err
 	binary.LittleEndian.PutUint16(new[pos+0:], klen)
 	binary.LittleEndian.PutUint16(new[pos+KEY_SIZE_SIZE:], vlen)
 
-	/* 	fmt.Printf("[NodeAppendKV] - key=%d\n", key)
-	   	fmt.Printf("[NodeAppendKV] - pos=%d\n", pos+(KEY_SIZE_SIZE+VALUE_SIZE_SIZE)) */
-
 	copy(new[pos+4:], key)
 	copy(new[pos+4+klen:], val)
 
@@ -227,6 +224,7 @@ func LeafInsert(
 	NodeAppendRange(new, old, idx+1, idx, old.Nkeys()-idx)
 }
 
+// updates key-value pair to Node (maintaining the remaining)
 func LeafUpdate(
 	new BNode, old BNode, idx uint16, key []byte, val []byte,
 ) {
@@ -236,6 +234,15 @@ func LeafUpdate(
 	NodeAppendRange(new, old, idx+1, idx+1, old.Nkeys()-(idx+1))
 }
 
+// deletes key-value pair to Node (maintaining the remaining)
+func LeafDelete(new BNode, old BNode, idx uint16) {
+	new.SetHeader(BNODE_LEAF, old.Nkeys()-1)
+	NodeAppendRange(new, old, 0, 0, idx)
+	NodeAppendRange(new, old, idx+1, idx+1, old.Nkeys()-(idx+1))
+}
+
+// Finds KV pair in node by Key
+//
 // TODO: Use binary search
 func NodeLookupLE(node BNode, key []byte) (uint16, error) {
 	nkeys := node.Nkeys()
